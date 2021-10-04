@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <div class="title">Case Converter</div>
+    <label for="text"></label><textarea id="text"></textarea>
+    <button id="upper-case">Upper Case</button>
+    <button id="lower-case">Lower Case</button>
+    <button id="proper-case">Proper Case</button>
+    <button id="sentence-case">Sentence Case</button>
+    <button id="save-text-file">Save Text File</button>
+
+    <script>
+        let textArea = document.getElementById('text');
+        let upperBtn = document.getElementById('upper-case');
+        let lowerBtn = document.getElementById('lower-case');
+        let properBtn = document.getElementById('proper-case');
+        let sentenceBtn = document.getElementById('sentence-case');
+        let saveBtn = document.getElementById('save-text-file');
+
+        upperBtn.addEventListener('click', function() {
+            textArea.value = textArea.value.toUpperCase()
+        });
+
+        lowerBtn.addEventListener('click', function() {
+            textArea.value = textArea.value.toLowerCase()
+        });
+
+        properBtn.addEventListener('click', function() {
+            let properText = textArea.value.split(/\s/g);
+            textArea.value = properText.map(item => `${item[0].toUpperCase()}${item.slice(1)}`).join(" ");
+        });
+
+        sentenceBtn.addEventListener('click', function() {
+            let sentenceText = textArea.value.split(". ");
+            sentenceText = sentenceText.map(item => item.toLowerCase());
+            textArea.value = sentenceText.map(item => item ? `${item[0].toUpperCase()}${item.slice(1)}` : item).join(". ");
+        });
+
+        function download(filename, text) {
+            let element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        }
+
+        saveBtn.addEventListener('click', function() {
+            download('text.txt', textArea.value);
+        });
+
+    </script>
+</body>
+</html>
